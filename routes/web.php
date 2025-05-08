@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\dasController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\SiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layout.master');
-});
+
+
+Route::get('/', [dasController::class, 'index'])->name('das');
 
 // Route::resource('kelas', KelasController::class);
 Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');       
@@ -27,9 +29,19 @@ Route::get('/kelas/{id}/edit', [KelasController::class, 'edit'])->name('kelas.ed
 Route::put('/kelas/{id}', [KelasController::class, 'update'])->name('kelas.update'); 
 Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy'); 
 
-Route::get('/guru', [GuruController::class, 'index']);
-Route::post('/guru', [GuruController::class, 'store']);
-Route::get('/guru/{id}', [GuruController::class, 'show']);
-Route::put('/guru/{id}', [GuruController::class, 'update']);
-Route::delete('/guru/{id}', [GuruController::class, 'destroy']);
-Route::get('/kelas', [GuruController::class, 'getKelas']); 
+
+Route::get('/guru', [GuruController::class, 'index'])->name('guru.index');
+Route::get('/guru/{id}', [GuruController::class, 'show'])->name('guru.show');
+Route::post('/guru', [GuruController::class, 'store'])->name('guru.store');
+Route::put('/guru/{id}', [GuruController::class, 'update'])->name('guru.update');
+Route::delete('/guru/{id}', [GuruController::class, 'destroy'])->name('guru.destroy');
+Route::get('/kelassss', [GuruController::class, 'getKelas'])->name('guru.getKelas');
+
+Route::get('/kelassss', [SiswaController::class, 'getKelas']);
+Route::get('/gurusss', [SiswaController::class, 'getGuru']);
+
+Route::get('/siswa/data', [SiswaController::class, 'index']);
+Route::post('/siswa/store', [SiswaController::class, 'store']);
+Route::get('/siswa/data/{id}', [SiswaController::class, 'show']);
+Route::post('/siswa/update/{id}', [SiswaController::class, 'update']);
+Route::delete('/siswa/delete/{id}', [SiswaController::class, 'destroy']);

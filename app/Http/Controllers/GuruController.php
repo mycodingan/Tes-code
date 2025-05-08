@@ -10,35 +10,42 @@ class GuruController extends Controller
 {
     public function index()
     {
-        $gurus = Guru::all(); 
-        return view('guru', compact('gurus'));
+        if (request()->ajax()) {
+            $gurus = Guru::with('kelas')->get();
+            return response()->json($gurus);
+        }
+
+        return view('guru');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama_guru' => 'required|string|max:255',
+            'nama_guru' => 'required',
             'kelas_id' => 'required|exists:kelas,id',
         ]);
 
-        $guru = Guru::create([
-            'nama_guru' => $request->nama_guru,
-            'kelas_id' => $request->kelas_id,
-        ]);
-
-        return response()->json(['success' => true, 'data' => $guru]);
+        try {
+            $guru = Guru::create([
+                'nama_guru' => $request->nama_guru,
+                'kelas_id' => $request->kelas_id,
+            ]);
+            return response()->json(['success' => true, 'data' => $guru]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Data gagal disimpan', 'error' => $e->getMessage()]);
+        }
     }
 
     public function show($id)
     {
-        $guru = Guru::with('kelas')->findOrFail($id);
+        $guru = Guru::findOrFail($id);
         return response()->json($guru);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_guru' => 'required|string|max:255',
+            'nama_guru' => 'required',
             'kelas_id' => 'required|exists:kelas,id',
         ]);
 
@@ -56,12 +63,11 @@ class GuruController extends Controller
         $guru = Guru::findOrFail($id);
         $guru->delete();
 
-        return response()->json(['success' => true, 'message' => 'Guru deleted successfully']);
+        return response()->json(['success' => true]);
     }
 
     public function getKelas()
     {
-        $kelas = Kelas::all();
-        return response()->json($kelas);
+        return response()->json(Kelas::all());
     }
 }
