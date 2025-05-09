@@ -76,7 +76,7 @@
                         <td>${siswa.kelas ? siswa.kelas.nama_kelas : '-'}</td>
                         <td>
                             <button onclick="editSiswa(${siswa.id})" class="btn btn-warning">Edit</button>
-                            <button onclick="deleteSiswa(${siswa.id})" class="btn btn-danger">Hapus</button>
+                            <button onclick="deleteSiswa(${siswa.id})" class="btn btn-danger  ">Hapus</button>
                         </td>
                     </tr>
                 `;
