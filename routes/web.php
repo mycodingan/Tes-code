@@ -4,6 +4,7 @@ use App\Http\Controllers\dasController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +17,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/login', [UserController::class, 'loginView'])->name('login');
+Route::post('/login', [UserController::class, 'check_login'])->name('login.check_login');
 
+Route::get('/register', [UserController::class, 'registerView'])->name('register.index');
+Route::post('/register', [UserController::class, 'store'])->name('register.store');
 
-
+Route::middleware(['auth'])->group(function () {
+Route::get('/logout', [dasController::class, 'logout'])->name('dashboard.logout');
 Route::get('/', [dasController::class, 'index'])->name('das');
 
 // Route::resource('kelas', KelasController::class);
@@ -45,3 +51,5 @@ Route::post('/siswa/store', [SiswaController::class, 'store']);
 Route::get('/siswa/data/{id}', [SiswaController::class, 'show']);
 Route::post('/siswa/update/{id}', [SiswaController::class, 'update']);
 Route::delete('/siswa/delete/{id}', [SiswaController::class, 'destroy']);
+});
+

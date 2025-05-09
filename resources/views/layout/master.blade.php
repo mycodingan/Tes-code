@@ -48,6 +48,9 @@
                 siswa   
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ route('dashboard.logout') }}" class="list-group-item" style="color: #212529;">Logout</a>
+            </li>
           </ul>
         </div>
       </nav>
